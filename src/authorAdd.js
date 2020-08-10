@@ -24,7 +24,7 @@ class BookAdd extends Component {
       },
     })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
       })
       .catch((error) => console.log(error));
   };
@@ -36,7 +36,12 @@ class BookAdd extends Component {
 
   handleSubmit = () => {
     const authorId = uuidv4();
-    this.createAuthor(authorId);
+    if (!this.state.authorFirstName || !this.state.authorLastName) {
+      return;
+    } else {
+      this.createAuthor(authorId);
+      this.props.history.push('/authors');
+    }
   };
 
   render() {

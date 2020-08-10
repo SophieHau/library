@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -44,9 +45,14 @@ class Author extends Component {
           <Typography variant="h5" component="h2">
             {author.firstName + ' ' + author.lastName}
           </Typography>
-          <Button color="default" variant="contained">
-            Edit
-          </Button>
+          <Link
+            to={`/authors/edit/${author.id}`}
+            style={{ textDecoration: 'none' }}
+          >
+            <Button color="default" variant="contained">
+              Edit
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     );

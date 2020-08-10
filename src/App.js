@@ -19,6 +19,8 @@ import AuthorList from './authorList';
 import Author from './author';
 import BookAdd from './bookAdd';
 import AuthorAdd from './authorAdd';
+import BookEdit from './bookEdit';
+import AuthorEdit from './authorEdit';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   cardMedia: {
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '56.25%',
   },
   cardContent: {
     flexGrow: 1,
@@ -105,7 +107,8 @@ export default function Library() {
                 <Route exact path="/books" component={BookList} />
                 <Route path="/books/create" component={BookAdd} />
                 <Route path="/authors/create" component={AuthorAdd} />
-
+                <Route path="/books/edit/:id" component={BookEdit} />
+                <Route path="/authors/edit/:id" component={AuthorEdit} />
                 <Route path="/books/:id" component={Book} />
                 <Route path="/authors/:id" component={Author} />
                 <Route path="/authors" component={AuthorList} />

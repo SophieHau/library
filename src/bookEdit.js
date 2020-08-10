@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -13,27 +12,54 @@ class BookAdd extends Component {
     isbn: '',
     authorFirstName: '',
     authorLastName: '',
+    authorId: '',
+    bookId: this.props.match.params.id,
   };
 
-  createBook = (bookId, authorId) => {
+  getBook = () => {
     axios({
-      url: 'http://localhost:5000/books/',
-      method: 'post',
-      data: {
-        id: bookId,
-        name: this.state.bookName,
-        isbn: this.state.isbn,
-        author: {
-          id: authorId,
-          firstName: this.state.authorFirstName,
-          lastName: this.state.authorLastName,
-        },
-      },
+      url: 'http://localhost:5000/books/' + this.state.bookId,
+      method: 'get',
     })
       .then((response) => {
-        console.log(response);
+        this.setState({
+          bookName: response.data.name,
+          isbn: response.data.isbn,
+          authorFirstName: response.data.author.firstName,
+          authorLastName: response.data.author.lastName,
+          authorId: response.data.author.id,
+        });
       })
       .catch((error) => console.log(error));
+  };
+
+  editBook = () => {
+    if (
+      !this.state.bookId ||
+      !this.state.bookName ||
+      !this.state.isbn ||
+      !this.state.authorId ||
+      !this.state.authorFirstName ||
+      !this.state.authorLastName
+    ) {
+      return;
+    } else {
+      axios({
+        url: 'http://localhost:5000/books/' + this.state.bookId,
+        method: 'put',
+        data: {
+          id: this.state.bookId,
+          name: this.state.bookName,
+          isbn: this.state.isbn,
+          author: {
+            id: this.state.authorId,
+            firstName: this.state.authorFirstName,
+            lastName: this.state.authorLastName,
+          },
+        },
+      });
+      this.props.history.push('/books/' + this.state.bookId);
+    }
   };
 
   handleChange = (event) => {
@@ -41,21 +67,9 @@ class BookAdd extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = () => {
-    const bookId = uuidv4();
-    const authorId = uuidv4();
-    if (
-      !this.state.bookName ||
-      !this.state.isbn ||
-      !this.state.authorFirstName ||
-      !this.state.authorLastName
-    ) {
-      return;
-    } else {
-      this.createBook(bookId, authorId);
-      this.props.history.push('/books');
-    }
-  };
+  componentDidMount() {
+    this.getBook(this.state.bookId);
+  }
 
   render() {
     return (
@@ -109,9 +123,9 @@ class BookAdd extends Component {
           type="submit"
           style={{ height: '40%', maxWidth: '20%', alignSelf: 'center' }}
           variant="contained"
-          onClick={this.handleSubmit}
+          onClick={this.editBook}
         >
-          Add Book
+          Update Book
         </Button>
       </Card>
     );
