@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
 import {
   AppBar,
   Button,
@@ -10,9 +12,13 @@ import {
 } from '@material-ui/core';
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import { makeStyles } from '@material-ui/core/styles';
+
 import BookList from './bookList';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Book from './book';
+import AuthorList from './authorList';
+import Author from './author';
+import BookAdd from './bookAdd';
+import AuthorAdd from './authorAdd';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -48,8 +54,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Library() {
   const classes = useStyles();
-  const [page, setPage] = useState('books');
-
   return (
     <Router>
       <React.Fragment>
@@ -78,28 +82,18 @@ export default function Library() {
               <div className={classes.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Link to="/books/" style={{ textDecoration: 'none' }}>
-                      <Button
-                        onClick={() => {
-                          setPage('books');
-                        }}
-                        variant={page === 'books' ? 'contained' : 'outlined'}
-                        color="primary"
-                      >
+                    <Link to="/books" style={{ textDecoration: 'none' }}>
+                      <Button variant="outlined" color="primary">
                         Book list
                       </Button>
                     </Link>
                   </Grid>
                   <Grid item>
-                    {/* <Link to="/authors/"> */}
-                    <Button
-                      onClick={() => setPage('authors')}
-                      variant={page === 'authors' ? 'contained' : 'outlined'}
-                      color="primary"
-                    >
-                      Author list
-                    </Button>
-                    {/* </Link> */}
+                    <Link to="/authors" style={{ textDecoration: 'none' }}>
+                      <Button variant="outlined" color="primary">
+                        Author list
+                      </Button>
+                    </Link>
                   </Grid>
                 </Grid>
               </div>
@@ -108,10 +102,13 @@ export default function Library() {
           <Container className={classes.cardGrid} maxWidth="md">
             <Grid container spacing={4}>
               <Switch>
-                <Route exact path="/books/" component={BookList} />
-                <Route path="/books/:id/" component={Book} />
-                {/* <Route path="/authors/" component={Authors} />
-                <Route path="/authors/id/" component={Author} /> */}
+                <Route exact path="/books" component={BookList} />
+                <Route path="/books/create" component={BookAdd} />
+                <Route path="/authors/create" component={AuthorAdd} />
+
+                <Route path="/books/:id" component={Book} />
+                <Route path="/authors/:id" component={Author} />
+                <Route path="/authors" component={AuthorList} />
               </Switch>
             </Grid>
           </Container>

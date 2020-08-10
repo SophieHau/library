@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
 
 class Book extends Component {
   state = {
@@ -14,7 +14,7 @@ class Book extends Component {
 
   getBook = (bookId) => {
     axios({
-      url: 'http://localhost:5000/books/' + bookId + '/',
+      url: 'http://localhost:5000/books/' + bookId,
       method: 'get',
     })
       .then((response) => {
@@ -32,21 +32,32 @@ class Book extends Component {
       <Card
         style={{
           width: '100%',
+          padding: 20,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          display: 'flex',
         }}
       >
-        <CardContent>
+        <CardContent
+          style={{
+            justifyContent: 'space-between',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <Typography variant="h5" component="h2">
             {book.name}
           </Typography>
           <Typography variant="body2" component="p">
             ISBN: {book.isbn}
           </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">
+          <Typography size="small">
             By: {author.firstName} {author.lastName}
-          </Button>
-        </CardActions>
+          </Typography>
+        </CardContent>
+        <Button color="default" style={{ height: '40%' }} variant="contained">
+          Edit
+        </Button>
       </Card>
     );
   }

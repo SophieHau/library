@@ -10,46 +10,44 @@ import Divider from '@material-ui/core/Divider';
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import { Button } from '@material-ui/core';
 
-class BookList extends Component {
+class AuthorList extends Component {
   state = {
-    books: [],
+    authors: [],
   };
 
-  getBooks = () => {
+  getAuthors = () => {
     axios({
-      url: 'http://localhost:5000/books',
+      url: 'http://localhost:5000/authors',
       method: 'get',
     })
       .then((response) => {
-        this.setState({ books: response.data });
+        this.setState({ authors: response.data });
       })
       .catch((error) => console.log(error));
   };
 
-  editBook = () => {};
-
   componentDidMount() {
-    this.getBooks();
+    this.getAuthors();
   }
 
   render() {
-    const { books } = this.state;
+    const { authors } = this.state;
     return (
       <div style={{ width: '100%' }}>
-        <Link to="/books/create" style={{ textDecoration: 'none' }}>
+        <Link to="/authors/create" style={{ textDecoration: 'none' }}>
           <Button
             color="default"
             style={{ marginBottom: 40 }}
             variant="contained"
           >
-            Add Book
+            Add Author
           </Button>
         </Link>
-        {books.map((book) => (
-          <List key={book.id} component="nav">
+        {authors.map((author) => (
+          <List key={author.id} component="nav">
             <ListItem style={{ justifyContent: 'space-between' }}>
               <Link
-                to={`/books/${book.id}`}
+                to={`/authors/${author.id}`}
                 style={{
                   textDecoration: 'none',
                   color: 'black',
@@ -60,7 +58,9 @@ class BookList extends Component {
                   <ListItemIcon>
                     <LocalLibraryIcon />
                   </ListItemIcon>
-                  <ListItemText primary={book.name} />
+                  <ListItemText
+                    primary={author.firstName + ' ' + author.lastName}
+                  />
                 </ListItem>
               </Link>
             </ListItem>
@@ -72,4 +72,4 @@ class BookList extends Component {
   }
 }
 
-export default BookList;
+export default AuthorList;
